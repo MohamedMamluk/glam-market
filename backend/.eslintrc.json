@@ -1,0 +1,50 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "import", "unused-imports", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "indent": "off",
+    "no-multiple-empty-lines": "error",
+    "object-shorthand": "off",
+    "sort-imports": "off",
+    "comma-dangle": "off",
+    "quotes": ["error", "backtick"],
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/lines-between-class-members": "error",
+    "import/named": "error",
+    "import/default": "error",
+    "import/namespace": "error",
+    "import/no-restricted-paths": "error",
+    "import/no-relative-parent-imports": "error",
+    "import/no-unused-modules": "off",
+    "unused-imports/no-unused-imports-ts": "warn",
+    "unused-imports/no-unused-vars-ts": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "lf"
+      }
+    ]
+
+  },
+  "overrides": [
+    {
+      "files": ["**/*.js", "**/*.ts"],
+      "excludedFiles": "node_modules/*"
+    }
+  ]
+}
