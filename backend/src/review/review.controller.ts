@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -16,18 +17,20 @@ import { ReviewService } from './review.service';
 @Controller('review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
-  @Post('create')
+  @Post(':productId')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard('jwt'))
   async createReview(
     @Body() reviewBody: CreateReviewDto,
     @Req() request: Request,
+    @Param('productId') productId: string,
   ) {
-    const fullReviewBody: CreateReviewDto & { user: string } = {
-      ...reviewBody,
-      user: request.user as string,
-    };
-    console.log(request.user);
+    const fullReviewBody: CreateReviewDto & { user: string; product: string } =
+      {
+        ...reviewBody,
+        user: request.user as string,
+        product: productId,
+      };
     return this.reviewService.createReview(fullReviewBody);
   }
 }

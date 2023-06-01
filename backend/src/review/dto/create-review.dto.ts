@@ -6,9 +6,6 @@ export class CreateReviewDto {
   @IsNumber()
   rating: number;
 
-  @IsMongoId()
-  product: Product;
-
   @IsString()
   comment: string;
 }
