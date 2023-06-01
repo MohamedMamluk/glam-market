@@ -2,15 +2,20 @@ import {
   Body,
   Controller,
   Post,
+  Req,
+  UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+
 import { JwtService } from '@nestjs/jwt';
 import { ResponseInterceptor } from 'src/interceptors/responseInterceptor';
 import { UserService } from 'src/user/user.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { User, UserDocument } from 'src/user/schemas/user.schema';
 
 @Controller('auth')
 export class AuthController {
@@ -27,14 +32,11 @@ export class AuthController {
   }
 
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard('local'))
   @UseInterceptors(ResponseInterceptor) // Apply the ResponseInterceptor
   @Post('login')
-  async loginUser(@Body() loginUserData: LoginUserDto) {
-    const user = await this.userService.loginUser(loginUserData);
-
-    if (!user) {
-      return { error: 'something went wrong' };
-    }
+  async loginUser(@Req() req) {
+    const user: UserDocument = req.user;
 
     const token = await this.JwtService.signAsync({ id: user._id });
 
