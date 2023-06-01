@@ -11,14 +11,13 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
 
-@Controller('review')
+@Controller('product/:productId/review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
-  @Post(':productId')
+  @Post('')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard('jwt'))
   async createReview(
@@ -35,8 +34,13 @@ export class ReviewController {
     return this.reviewService.createReview(fullReviewBody);
   }
 
-  @Get(':productId')
+  @Get('')
   async getReviewsForProduct(@Param('productId') productId: string) {
     return this.reviewService.getReviewsForProduct(productId);
+  }
+
+  @Get(':reviewId')
+  async getReview(@Param('reviewId') reviewId: string) {
+    return this.reviewService.getReview(reviewId);
   }
 }

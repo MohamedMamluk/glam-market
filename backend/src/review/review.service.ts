@@ -8,11 +8,15 @@ import { Review, ReviewDocument } from './schemas/review.schema';
 export class ReviewService {
   constructor(@InjectModel(Review.name) private reviewModel: Model<Review>) {}
 
-  async createReview(reviewBody: CreateReviewDto): Promise<ReviewDocument> {
-    return this.reviewModel.create(reviewBody);
-  }
-
   async getReviewsForProduct(productId: string) {
     return this.reviewModel.find({ product: productId });
+  }
+
+  async getReview(reviewId: string) {
+    return this.reviewModel.findById(reviewId);
+  }
+
+  async createReview(reviewBody: CreateReviewDto): Promise<ReviewDocument> {
+    return this.reviewModel.create(reviewBody);
   }
 }
