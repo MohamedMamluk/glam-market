@@ -51,4 +51,8 @@ export class UserService {
       throw new Error(error);
     }
   }
+
+  async findUserByEmail(email: string) {
+    return this.User.findOne({ email });
+  }
 }
