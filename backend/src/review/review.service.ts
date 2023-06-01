@@ -11,4 +11,8 @@ export class ReviewService {
   async createReview(reviewBody: CreateReviewDto): Promise<ReviewDocument> {
     return this.reviewModel.create(reviewBody);
   }
+
+  async getReviewsForProduct(productId: string) {
+    return this.reviewModel.find({ product: productId });
+  }
 }

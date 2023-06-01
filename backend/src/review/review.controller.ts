@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Post,
   Req,
@@ -32,5 +33,10 @@ export class ReviewController {
         product: productId,
       };
     return this.reviewService.createReview(fullReviewBody);
+  }
+
+  @Get(':productId')
+  async getReviewsForProduct(@Param('productId') productId: string) {
+    return this.reviewService.getReviewsForProduct(productId);
   }
 }
