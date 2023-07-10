@@ -3,7 +3,10 @@ import { HydratedDocument } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 export type UserDocument = HydratedDocument<User>;
-
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user',
+}
 @Schema({ timestamps: true })
 export class User {
   @Prop({ required: [true, 'firstName is required'] })
@@ -21,6 +24,8 @@ export class User {
   @Prop({ required: [true, 'password is required'] })
   password: string;
 
+  @Prop({ required: true, enum: UserRole, default: UserRole.USER })
+  role: UserRole;
   async comparePassword(candidatePassword: string) {
     return await bcrypt.compare(candidatePassword, this.password);
   }

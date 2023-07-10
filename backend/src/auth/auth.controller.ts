@@ -24,7 +24,7 @@ export class AuthController {
 
   @Post('register')
   @UsePipes(ValidationPipe)
-  @UseInterceptors(ResponseInterceptor) // Apply the ResponseInterceptor
+  //@UseInterceptors(ResponseInterceptor) // Apply the ResponseInterceptor
   registerUser(@Body() createUserData: RegisterUserDto) {
     return this.userService.createUser(createUserData);
   }
@@ -34,7 +34,6 @@ export class AuthController {
   @UseInterceptors(ResponseInterceptor) // Apply the ResponseInterceptor
   async loginUser(@Req() req) {
     const user = req.user;
-    console.log(user._doc._id);
 
     const token = await this.JwtService.signAsync({ id: user._doc._id });
 

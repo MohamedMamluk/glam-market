@@ -4,12 +4,11 @@ import { Review } from 'src/review/schemas/review.schema';
 import { User } from 'src/user/schemas/user.schema';
 
 export type ProductDocument = HydratedDocument<Product>;
-
 @Schema({
   timestamps: true,
 })
 export class Product {
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
@@ -18,16 +17,16 @@ export class Product {
   @Prop({ default: [] })
   colors: string[];
 
-  @Prop()
+  @Prop({ required: true })
   description: string;
 
-  @Prop({ default: [] })
+  @Prop({ required: true, default: [] })
   category: string[];
 
   @Prop({ default: [] })
   tags: string[];
 
-  @Prop()
+  @Prop({ required: true, default: [] })
   images: string[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })

@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -11,8 +12,12 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserRole } from 'src/user/schemas/user.schema';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewService } from './review.service';
+import { UpdateReviewGuard } from './update-review.guard';
 
 @Controller('product/:productId/review')
 export class ReviewController {
@@ -42,5 +47,16 @@ export class ReviewController {
   @Get(':reviewId')
   async getReview(@Param('reviewId') reviewId: string) {
     return this.reviewService.getReview(reviewId);
+  }
+
+  @Patch(':reviewId')
+  @Roles(UserRole.ADMIN, UserRole.USER)
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard('jwt'), UpdateReviewGuard)
+  async updateReview(
+    @Param('reviewId') reviewId: string,
+    @Body() updateBody: UpdateReviewDto,
+  ) {
+    return this.reviewService.updateReview(reviewId, updateBody);
   }
 }
