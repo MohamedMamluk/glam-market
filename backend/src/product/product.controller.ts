@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Post,
   UseGuards,
@@ -14,7 +15,9 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RoleGuard } from 'src/auth/guards/role.guard';
 import { UserRole } from 'src/user/schemas/user.schema';
 import { CreateProductDTO } from './dto/create-product.dto';
+
 import { ProductService } from './product.service';
+import { IsMongoId } from 'src/pipes/isMongoId.pipe';
 
 @Controller('product')
 export class ProductController {
@@ -25,8 +28,8 @@ export class ProductController {
   }
 
   @Get(':id')
-  getProduct() {
-    return this.productService.getProduct();
+  getProduct(@Param('id', IsMongoId) productId: string) {
+    return this.productService.getProduct(productId);
   }
 
   @Post('')
