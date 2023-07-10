@@ -18,6 +18,7 @@ import { CreateProductDTO } from './dto/create-product.dto';
 
 import { ProductService } from './product.service';
 import { IsMongoId } from 'src/pipes/isMongoId.pipe';
+import { UpdateProductDTO } from './dto/update-product.dto';
 
 @Controller('product')
 export class ProductController {
@@ -41,12 +42,19 @@ export class ProductController {
   }
 
   @Patch(':id')
-  updateProduct() {
-    return this.productService.updateProduct();
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  @Roles(UserRole.ADMIN)
+  updateProduct(
+    @Param('id', IsMongoId) productId: string,
+    @Body() product: UpdateProductDTO,
+  ) {
+    return this.productService.updateProduct(productId, product);
   }
 
   @Delete(':id')
-  deleteProduct() {
-    return this.productService.deleteProduct();
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  @Roles(UserRole.ADMIN)
+  deleteProduct(@Param('id', IsMongoId) productId: string) {
+    return this.productService.deleteProduct(productId);
   }
 }
