@@ -1,4 +1,14 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import { CreateProductDTO } from './dto/create-product.dto';
 import { ProductService } from './product.service';
 
 @Controller('product')
@@ -14,9 +24,10 @@ export class ProductController {
     return this.productService.getProduct();
   }
 
-  @Post()
-  addProduct() {
-    return this.productService.addProduct();
+  @Post('')
+  @UsePipes(ValidationPipe)
+  addProduct(@Body() product: CreateProductDTO) {
+    return this.productService.addProduct(product);
   }
 
   @Patch(':id')

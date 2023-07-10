@@ -13,9 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { ResponseInterceptor } from 'src/interceptors/responseInterceptor';
 import { UserService } from 'src/user/user.service';
-import { LoginUserDto } from './dto/login-user.dto';
 import { RegisterUserDto } from './dto/register-user.dto';
-import { User, UserDocument } from 'src/user/schemas/user.schema';
 
 @Controller('auth')
 export class AuthController {
@@ -24,21 +22,20 @@ export class AuthController {
     private JwtService: JwtService,
   ) {}
 
-  @UsePipes(ValidationPipe)
-  @UseInterceptors(ResponseInterceptor) // Apply the ResponseInterceptor
   @Post('register')
+  @UsePipes(ValidationPipe)
+  //@UseInterceptors(ResponseInterceptor) // Apply the ResponseInterceptor
   registerUser(@Body() createUserData: RegisterUserDto) {
     return this.userService.createUser(createUserData);
   }
 
-  @UsePipes(ValidationPipe)
+  @Post('login')
   @UseGuards(AuthGuard('local'))
   @UseInterceptors(ResponseInterceptor) // Apply the ResponseInterceptor
-  @Post('login')
   async loginUser(@Req() req) {
-    const user: UserDocument = req.user;
+    const user = req.user;
 
-    const token = await this.JwtService.signAsync({ id: user._id });
+    const token = await this.JwtService.signAsync({ id: user._doc._id });
 
     return token;
   }

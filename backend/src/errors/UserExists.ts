@@ -1,7 +1,7 @@
-export class UserExistsError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'UserExistsError';
-    Object.setPrototypeOf(this, UserExistsError.prototype);
+import { HttpException, HttpStatus } from '@nestjs/common';
+
+export class UserAlreadyExistsException extends HttpException {
+  constructor() {
+    super('User Already Exists', HttpStatus.CONFLICT);
   }
 }
