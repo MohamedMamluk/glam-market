@@ -11,7 +11,7 @@ export class Review {
   rating: number;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
-  user: User;
+  user: string;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
